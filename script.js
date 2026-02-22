@@ -28,19 +28,37 @@ function renderUserSelect() {
 function renderBookmarkElements(list) {
   clearBookmarkElementsContainer();
 
-  const container = getBookmarkElementsContainer();
-
   for(let i = 0; i < list.length; i++) {
-    renderBookmarkElement(container, list[i], i);
+    renderBookmarkElement(list[i], i);
   }
 }
 
-function renderBookmarkElement(container, bookmarkData, index) {
+function renderBookmarkElement(bookmarkData, index) {
   // TODO: implement bookmark card element getting, when the page will be ready
-  //const bookmarkCard = template.content.cloneNode(true);
+  //const bookmarkElement = template.content.cloneNode(true);
 
-  
-  container.appendChild(bookmarkCard);
+  renderBookmarkElementTitle(bookmarkData, bookmarkElement);
+  renderBookmarkElementDescription(bookmarkData, bookmarkElement);
+  renderBookmarkElementTimestamp(bookmarkData, bookmarkElement);
+  renderBookmarkElementLikeBtn(bookmarkData, bookmarkElement, index);
+
+  getBookmarkElementsContainer().appendChild(bookmarkElement);
+}
+
+function renderBookmarkElementTitle(data, element) {
+  //TODO: implement setting title text and url on bookmark element
+}
+
+function renderBookmarkElementDescription(data, element) {
+  //TODO: implement setting description text on bookmark element
+}
+
+function renderBookmarkElementTimestamp(data, element) {
+  //TODO: implement setting date text from timestamp on bookmark element
+}
+
+function renderBookmarkElementLikeBtn(data, element, id) {
+  //TODO: implement setting like button text and id on bookmark element
 }
 //endregion
 
