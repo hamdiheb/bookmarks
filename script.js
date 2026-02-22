@@ -6,7 +6,32 @@
 
 import { getUserIds, getData, setData, clearData } from "./storage.js";
 
-window.onload = function () {
-  const users = getUserIds();
-  document.querySelector("body").innerText = `There are ${users.length} users`;
-};
+//region prepare
+function setupUserSelect() {
+  getUserSelect().addEventListener("input", onInputUserSelect);
+}
+//endregion
+
+
+//region render
+//endregion
+
+
+//region listeners
+function onLoadWindow() {
+  setupUserSelect();
+}
+
+function onInputUserSelect(event) {
+  console.log(event.target.value);
+}
+//endregion
+
+
+//region utilities
+function getUserSelect() {
+  return document.getElementById("user-select");
+}
+//endregion
+
+window.onload = onLoadWindow();
