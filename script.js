@@ -6,6 +6,8 @@
 
 import { getUserIds, getData, setData, clearData } from "./storage.js";
 
+const USER_STRING_PREFIX = "User_";
+
 //region prepare
 function setupUserSelect() {
   getUserSelect().addEventListener("input", onInputUserSelect);
@@ -14,12 +16,22 @@ function setupUserSelect() {
 
 
 //region render
+  function renderUserSelect() {
+    const userSelect = getUserSelect();
+
+    userSelect.options.length = 0;
+    for(const id of getUserIds()) {
+      userSelect.add(new Option(`${USER_STRING_PREFIX}${id}`, id));
+    }
+  }
 //endregion
 
 
 //region listeners
 function onLoadWindow() {
   setupUserSelect();
+  renderUserSelect();
+  dispatchUserSelectInputEvent();
 }
 
 function onInputUserSelect(event) {
@@ -30,8 +42,14 @@ function onInputUserSelect(event) {
 
 //region utilities
 function getUserSelect() {
-  return document.getElementById("user-select");
+  //TODO: implement getting user select element from the page, when it will be ready.
+  //return document.getElementById("user-select");
+}
+
+function dispatchUserSelectInputEvent() {
+  getUserSelect().dispatchEvent(new Event("input"));
 }
 //endregion
 
-window.onload = onLoadWindow();
+//TODO: uncomment when script will be ready.
+//window.onload = onLoadWindow();
