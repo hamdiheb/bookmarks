@@ -16,14 +16,32 @@ function setupUserSelect() {
 
 
 //region render
-  function renderUserSelect() {
+function renderUserSelect() {
     const userSelect = getUserSelect();
 
-    userSelect.options.length = 0;
-    for(const id of getUserIds()) {
-      userSelect.add(new Option(`${USER_STRING_PREFIX}${id}`, id));
-    }
+  userSelect.options.length = 0;
+  for(const id of getUserIds()) {
+    userSelect.add(new Option(`${USER_STRING_PREFIX}${id}`, id));
   }
+}
+
+function renderBookmarkElements(list) {
+  clearBookmarkElementsContainer();
+
+  const container = getBookmarkElementsContainer();
+
+  for(let i = 0; i < list.length; i++) {
+    renderBookmarkElement(container, list[i], i);
+  }
+}
+
+function renderBookmarkElement(container, bookmarkData, index) {
+  // TODO: implement bookmark card element getting, when the page will be ready
+  //const bookmarkCard = template.content.cloneNode(true);
+
+  
+  container.appendChild(bookmarkCard);
+}
 //endregion
 
 
@@ -35,12 +53,16 @@ function onLoadWindow() {
 }
 
 function onInputUserSelect(event) {
-  console.log(event.target.value);
+  renderBookmarkElements(getData(getCurrentUserId()));
 }
 //endregion
 
 
 //region utilities
+function getCurrentUserId() {
+  return getUserSelect().value;
+}
+
 function getUserSelect() {
   //TODO: implement getting user select element from the page, when it will be ready.
   //return document.getElementById("user-select");
@@ -48,6 +70,14 @@ function getUserSelect() {
 
 function dispatchUserSelectInputEvent() {
   getUserSelect().dispatchEvent(new Event("input"));
+}
+
+function getBookmarkElementsContainer() {
+  //TODO: implement the getting bookmark elements container
+}
+
+function clearBookmarkElementsContainer() {
+  getBookmarkElementsContainer().innerHTML = "";
 }
 //endregion
 
