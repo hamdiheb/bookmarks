@@ -46,6 +46,22 @@ class Bookmark {
 function setupUserSelect() {
   getUserSelect().addEventListener("input", onInputUserSelect);
 }
+
+function setupBookmarkAddForm() {
+  //TODO: If it's needed add setup other bookmark add form elements
+  setupBookmarkAddFormOkBtn();
+  setupBookmarkAddFormCancelBtn();
+}
+
+function setupBookmarkAddFormOkBtn() {
+  //TODO: implement getting the bookmark add form OK button element 
+  document.querySelector("").addEventListener("click", onClickBookmarkAddFormOkBtn);
+}
+
+function setupBookmarkAddFormCancelBtn() {
+  //TODO: implement getting the bookmark add form Cancel button element
+  document.querySelector("").addEventListener("click", onClickBookmarkAddFormCancelBtn);
+}
 //endregion
 
 
@@ -113,6 +129,7 @@ function renderNoBookmarksMessage() {
 //region listeners
 function onLoadWindow() {
   setupUserSelect();
+  setupBookmarkAddForm();
   renderUserSelect();
   dispatchUserSelectInputEvent();
 }
