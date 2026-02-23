@@ -19,6 +19,8 @@ class Bookmark {
   constructor(url, description) {
     this.url = url;
     this.description = description;
+    this.timestamp = new Date();
+    this.likeCount = 0;
   }
 
   getUrl() {
