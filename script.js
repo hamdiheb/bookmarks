@@ -165,6 +165,18 @@ function onClickBookmarkAddFormCancelBtn() {
   const url = document.querySelector("URL input query string").value = "";
   const description = document.querySelector("Description input query string").value = "";
 }
+
+function onClickBookmarkElementCopyBtn(event) {
+  const url = event.target.data.url;
+
+  navigator.clipboard.writeText(url)
+    .then(() => {
+      console.log(`URL '${url}' successfully copied to clipboard`);
+    })
+    .catch((error) => {
+      `Failed to copy URL '${url}' to clipboard:\n${error}`;
+    })
+}
 //endregion
 
 
