@@ -149,7 +149,7 @@ function onClickBookmarkAddFormOkBtn() {
   const url = document.querySelector("URL input query string").value;
   const description = document.querySelector("Description input query string").value;
 
-  if (checkUrlCorrect(url) && checkDescriptionCorrect()) {
+  if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect()) {
     const currentUserId = getCurrentUserId();
     const currentUserData = getData(currentUserId);
     
@@ -200,6 +200,16 @@ function getBookmarkElementsContainer() {
 
 function clearBookmarkElementsContainer() {
   getBookmarkElementsContainer().innerHTML = "";
+}
+
+function checkIsUrlCorrect(url) {
+  //TODO: implement url check logic and message show if it's incorrect.
+  return true;
+}
+
+function checkIsDescriptionCorrect(description) {
+  //TODO: implement description check logic and message show if it's incorrect.
+  return true;
 }
 //endregion
 
