@@ -44,6 +44,7 @@ function renderBookmarkElement(bookmarkData, index) {
   //const bookmarkElement = template.content.cloneNode(true);
 
   renderBookmarkElementTitle(bookmarkData, bookmarkElement);
+  renderBookmarkElementCopyBtn(bookmarkData, bookmarkElement);
   renderBookmarkElementDescription(bookmarkData, bookmarkElement);
   renderBookmarkElementTimestamp(bookmarkData, bookmarkElement);
   renderBookmarkElementLikeBtn(bookmarkData, bookmarkElement, index);
@@ -53,6 +54,10 @@ function renderBookmarkElement(bookmarkData, index) {
 
 function renderBookmarkElementTitle(data, element) {
   //TODO: implement setting title text and url on bookmark element
+}
+
+function renderBookmarkElementCopyBtn(data, element) {
+  //TODO: implement setting copy button text and click event listener on bookmark element
 }
 
 function renderBookmarkElementDescription(data, element) {
