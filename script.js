@@ -123,7 +123,11 @@ function renderBookmarkElementTimestamp(data, element) {
 }
 
 function renderBookmarkElementLikeBtn(data, element, index) {
-  //TODO: implement setting like button text and id on bookmark element
+  //TODO: implement getting bookmark element like button
+  const likeBtn = element.querySelector("like button query");
+  
+  likeBtn.innerText = data.likeCount;
+  likeBtn.addEventListener(onClickBookmarkElementLikeBtn);
 }
 
 function renderNoBookmarksMessage() {
