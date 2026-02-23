@@ -139,6 +139,22 @@ function onLoadWindow() {
 function onInputUserSelect(event) {
   renderBookmarkElements(getData(getCurrentUserId()));
 }
+
+function onClickBookmarkAddFormOkBtn() {
+  //TODO: implement bookmark add form input elements
+  const url = document.querySelector("URL input query string").value;
+  const description = document.querySelector("Description input query string").value;
+
+  if (checkUrlCorrect(url) && checkDescriptionCorrect()) {
+    const currentUserId = getCurrentUserId();
+    const currentUserData = getData(currentUserId);
+    
+    currentUserData.unshift(new Object(url, description));
+    setData(currentUserId, currentUserData);
+
+    dispatchUserSelectInputEvent();
+  }
+}
 //endregion
 
 
