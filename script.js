@@ -10,6 +10,38 @@ const USER_STRING_PREFIX = "User_";
 
 const NO_BOOKMARKS_MESSAGE = "There's no any bookmarks yet";
 
+class Bookmark {
+  url = "";
+  description = "";
+  timestamp = 0;
+  likeCount = 0;
+
+  constructor(url, description) {
+    this.url = url;
+    this.description = description;
+  }
+
+  getUrl() {
+    return this.url;
+  }
+
+  getDescription() {
+    return this.description;
+  }
+
+  getDateString() {
+    return this.timestamp.toLocaleString();
+  }
+
+  getLikeCount() {
+    return this.likeCount;
+  }
+
+  addLikeCount() {
+    return ++this.likeCount;
+  }
+}
+
 //region prepare
 function setupUserSelect() {
   getUserSelect().addEventListener("input", onInputUserSelect);
@@ -68,7 +100,7 @@ function renderBookmarkElementTimestamp(data, element) {
   //TODO: implement setting date text from timestamp on bookmark element
 }
 
-function renderBookmarkElementLikeBtn(data, element, id) {
+function renderBookmarkElementLikeBtn(data, element, index) {
   //TODO: implement setting like button text and id on bookmark element
 }
 
