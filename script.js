@@ -8,6 +8,8 @@ import { getUserIds, getData, setData, clearData } from "./storage.js";
 
 const USER_STRING_PREFIX = "User_";
 
+const NO_BOOKMARKS_MESSAGE = "There's no any bookmarks yet";
+
 //region prepare
 function setupUserSelect() {
   getUserSelect().addEventListener("input", onInputUserSelect);
@@ -28,8 +30,12 @@ function renderUserSelect() {
 function renderBookmarkElements(list) {
   clearBookmarkElementsContainer();
 
-  for(let i = 0; i < list.length; i++) {
-    renderBookmarkElement(list[i], i);
+  if (list.length) {
+    for (let i = 0; i < list.length; i++) {
+      renderBookmarkElement(list[i], i);
+    }
+  } else {
+    renderNoBookmarksMessage();
   }
 }
 
@@ -59,6 +65,10 @@ function renderBookmarkElementTimestamp(data, element) {
 
 function renderBookmarkElementLikeBtn(data, element, id) {
   //TODO: implement setting like button text and id on bookmark element
+}
+
+function renderNoBookmarksMessage() {
+  //TODO: implement setting no bookmarks message to the its container
 }
 //endregion
 
