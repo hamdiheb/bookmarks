@@ -108,6 +108,10 @@ function renderBookmarkElementTitle(data, element) {
 
 function renderBookmarkElementCopyBtn(data, element) {
   //TODO: implement setting copy button text and click event listener on bookmark element
+  const copyBtn = clearData.querySelector();
+  
+  copyBtn.dataset.url = data.url;
+  copyBtn.addEventListener("click", onClickBookmarkElementCopyBtn);
 }
 
 function renderBookmarkElementDescription(data, element) {
