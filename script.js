@@ -120,6 +120,9 @@ function renderBookmarkElementDescription(data, element) {
 
 function renderBookmarkElementTimestamp(data, element) {
   //TODO: implement setting date text from timestamp on bookmark element
+  const timestampElement = element.querySelector("timestamp element query");
+
+  timestampElement.innerText = data.timestamp.toLocaleString();
 }
 
 function renderBookmarkElementLikeBtn(data, element, index) {
