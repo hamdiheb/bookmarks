@@ -126,6 +126,7 @@ function renderBookmarkElementLikeBtn(data, element, index) {
   //TODO: implement getting bookmark element like button
   const likeBtn = element.querySelector("like button query");
   
+  likeBtn.dataset.bookmarkIndex = index;
   likeBtn.innerText = data.likeCount;
   likeBtn.addEventListener(onClickBookmarkElementLikeBtn);
 }
@@ -180,6 +181,14 @@ function onClickBookmarkElementCopyBtn(event) {
     .catch((error) => {
       `Failed to copy URL '${url}' to clipboard:\n${error}`;
     })
+}
+
+function onClickBookmarkElementLikeBtn(event) {
+  const likeBtn = event.target;
+  const bookmarkIndex = likeBtn.dataset.bookmarkIndex;
+  const bookmark = getData(getCurrentUserId())[bookmarkIndex];
+
+  likeBtn.innerText = bookmark.addLikeCount();
 }
 //endregion
 
