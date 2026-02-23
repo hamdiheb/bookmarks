@@ -155,6 +155,12 @@ function onClickBookmarkAddFormOkBtn() {
     dispatchUserSelectInputEvent();
   }
 }
+
+function onClickBookmarkAddFormCancelBtn() {
+  //TODO: implement bookmark add form input elements
+  const url = document.querySelector("URL input query string").value = "";
+  const description = document.querySelector("Description input query string").value = "";
+}
 //endregion
 
 
