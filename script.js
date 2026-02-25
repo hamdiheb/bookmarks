@@ -202,6 +202,7 @@ function getCurrentUserId() {
 }
 
 function getUserSelect() {
+  // TODO: check the select element id when the page will be available
   return document.getElementById("user_selector");
 }
 
