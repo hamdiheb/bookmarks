@@ -50,14 +50,14 @@ function setupUserSelect() {
 }
 
 function setupBookmarkAddForm() {
-  //TODO: If it's needed add setup other bookmark add form elements
   setupBookmarkAddFormOkBtn();
-  setupBookmarkAddFormCancelBtn();
+  //TODO check the button necessity when the page will be available
+  // setupBookmarkAddFormCancelBtn();
 }
 
 function setupBookmarkAddFormOkBtn() {
-  //TODO: implement getting the bookmark add form OK button element 
-  document.querySelector("").addEventListener("click", onClickBookmarkAddFormOkBtn);
+  //TODO: check the button id when the page will be available
+  document.getElementById("add_btn").addEventListener("click", onClickBookmarkAddFormOkBtn);
 }
 
 function setupBookmarkAddFormCancelBtn() {
