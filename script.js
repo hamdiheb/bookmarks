@@ -202,8 +202,7 @@ function getCurrentUserId() {
 }
 
 function getUserSelect() {
-  //TODO: implement getting user select element from the page, when it will be ready.
-  //return document.getElementById("user-select");
+  return document.getElementById("user_selector");
 }
 
 function dispatchUserSelectInputEvent() {
