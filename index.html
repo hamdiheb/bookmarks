@@ -1,8 +1,29 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link href="./style.css" rel="stylesheet"/>
     <script type="module" src="script.js"></script>
   </head>
   <body>
+    <header>
+      <h1 id="bookmark_logo">Bookmarks</h1>
+      <select id="user_selector">
+        <option class="user_selector_option">All users</option>
+      </select>
+    </header>
+    <main>
+      <form>
+        <label>Title</label>
+        <input type="text" placeholder="Write your title" id="fm_bookmark_title"/>
+        <label>Url</label>
+        <input type="text" placeholder="Write your Url" id="fm_bookmark_url"/>
+        <label>Description</label>
+        <textarea name="" id="fm_bookmark_description"></textarea>
+        <button id="add_btn">Add</button>
+      </form>
+      <section id="bookmarks">
+
+      </section>
+    </main>
   </body>
 </html>
