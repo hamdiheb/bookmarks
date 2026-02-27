@@ -45,6 +45,14 @@ class Bookmark {
 }
 
 //region prepare
+function setupUserData() {
+  for (const userId of getUserIds()) {
+    if (!getData(userId)) {
+      setData(userId, []);
+    }
+  }
+}
+
 function setupUserSelect() {
   getUserSelect().addEventListener("input", onInputUserSelect);
 }
@@ -142,6 +150,7 @@ function renderNoBookmarksMessage() {
 
 //region listeners
 function onLoadWindow() {
+  setupUserData();
   setupUserSelect();
   // setupBookmarkAddForm();
   renderUserSelect();
