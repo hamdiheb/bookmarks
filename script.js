@@ -210,7 +210,7 @@ function dispatchUserSelectInputEvent() {
 }
 
 function getBookmarkElementsContainer() {
-  //TODO: implement the getting bookmark elements container
+  return document.getElementById("bookmark-elements-container");
 }
 
 function clearBookmarkElementsContainer() {
