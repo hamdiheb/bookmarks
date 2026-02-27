@@ -54,7 +54,7 @@ function setupUserData() {
 }
 
 function setupUserSelect() {
-  getUserSelect().addEventListener("input", onInputUserSelect);
+  getUserSelect().addEventListener("change", onChangeUserSelect);
 }
 
 function setupBookmarkAddForm() {
@@ -157,7 +157,7 @@ function onLoadWindow() {
   // dispatchUserSelectInputEvent();
 }
 
-function onInputUserSelect(event) {
+function onChangeUserSelect(event) {
   renderBookmarkElements(getData(getCurrentUserId()));
 }
 
