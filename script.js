@@ -24,26 +24,6 @@ class Bookmark {
     this.timestamp = new Date();
     this.likeCount = 0;
   }
-
-  getUrl() {
-    return this.url;
-  }
-
-  getDescription() {
-    return this.description;
-  }
-
-  getDateString() {
-    return this.timestamp.toLocaleString();
-  }
-
-  getLikeCount() {
-    return this.likeCount;
-  }
-
-  addLikeCount() {
-    return ++this.likeCount;
-  }
 }
 
 //region prepare
