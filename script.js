@@ -49,7 +49,7 @@ function setupBookmarkAddFormOkBtn() {
   //TODO: implement getting the bookmark add form OK button element 
   document
     .querySelector("#bookmark-form-submit-button")
-    .addEventListener("click", onClickBookmarkAddFormOkBtn);
+    .addEventListener("click", onClickBookmarkFormAddBtn);
 }
 
 function setupBookmarkAddFormCancelBtn() {
@@ -144,7 +144,7 @@ function onChangeUserSelect(event) {
   renderBookmarkElements(getData(getCurrentUserId()));
 }
 
-function onClickBookmarkAddFormOkBtn() {
+function onClickBookmarkFormAddBtn() {
   const title = document.getElementById("bookmark-form-title-input").value;
   const url = document.getElementById("bookmark-form-url-input").value;
   const description = document.getElementById("bookmark-form-description-textarea").value;
@@ -154,9 +154,9 @@ function onClickBookmarkAddFormOkBtn() {
     const currentUserData = getData(currentUserId);
     
     currentUserData.unshift(new Bookmark(title, url, description));
-    console.log("add bookmark:", currentUserData);
     setData(currentUserId, currentUserData);
-
+    
+    clearBookmarkForm();
     dispatchUserSelectChangeEvent();
   }
 }
@@ -167,7 +167,7 @@ function onClickBookmarkAddFormCancelBtn() {
 }
 
 function onClickBookmarkElementCopyBtn(event) {
-  const url = event.target.data.url;
+  const url = event.target.dataset.url;
 
   navigator.clipboard.writeText(url)
     .then(() => {
@@ -197,6 +197,14 @@ function getCurrentUserId() {
 
 function getUserSelect() {
   return document.getElementById("user-select");
+}
+
+function getBookmarkForm() {
+  return document.getElementById("bookmark-form");
+}
+
+function clearBookmarkForm() {
+  getBookmarkForm().reset();
 }
 
 function dispatchUserSelectChangeEvent() {
