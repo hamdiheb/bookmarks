@@ -71,7 +71,6 @@ function renderUserSelect() {
 
 function renderBookmarkElements(list) {
   clearBookmarkElementsContainer();
-  console.log(getCurrentUserId(),list);
   if (list.length) {
     for (let i = 0; i < list.length; i++) {
       renderBookmarkElement(list[i], i);
@@ -138,7 +137,7 @@ function onLoadWindow() {
   setupUserSelect();
   setupBookmarkAddForm();
   renderUserSelect();
-  dispatchUserSelectInputEvent();
+  dispatchUserSelectChangeEvent();
 }
 
 function onChangeUserSelect(event) {
@@ -158,7 +157,7 @@ function onClickBookmarkAddFormOkBtn() {
     console.log("add bookmark:", currentUserData);
     setData(currentUserId, currentUserData);
 
-    dispatchUserSelectInputEvent();
+    dispatchUserSelectChangeEvent();
   }
 }
 
@@ -200,8 +199,8 @@ function getUserSelect() {
   return document.getElementById("user-select");
 }
 
-function dispatchUserSelectInputEvent() {
-  getUserSelect().dispatchEvent(new Event("input"));
+function dispatchUserSelectChangeEvent() {
+  getUserSelect().dispatchEvent(new Event("change"));
 }
 
 function getBookmarkElementsContainer() {
