@@ -69,7 +69,7 @@ function setupBookmarkAddFormCancelBtn() {
 
 //region render
 function renderUserSelect() {
-    const userSelect = getUserSelect();
+  const userSelect = getUserSelect();
 
   userSelect.options.length = 0;
   for(const id of getUserIds()) {
@@ -143,9 +143,9 @@ function renderNoBookmarksMessage() {
 //region listeners
 function onLoadWindow() {
   setupUserSelect();
-  setupBookmarkAddForm();
+  // setupBookmarkAddForm();
   renderUserSelect();
-  dispatchUserSelectInputEvent();
+  // dispatchUserSelectInputEvent();
 }
 
 function onInputUserSelect(event) {
@@ -202,8 +202,7 @@ function getCurrentUserId() {
 }
 
 function getUserSelect() {
-  //TODO: implement getting user select element from the page, when it will be ready.
-  //return document.getElementById("user-select");
+  return document.getElementById("user-select");
 }
 
 function dispatchUserSelectInputEvent() {
@@ -230,4 +229,4 @@ function checkIsDescriptionCorrect(description) {
 //endregion
 
 //TODO: uncomment when script will be ready.
-//window.onload = onLoadWindow();
+window.onload = onLoadWindow();
