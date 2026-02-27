@@ -1,0 +1,40 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#bookmark-form {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  margin: auto;
+  gap: 20px;
+}
+
+#bookmark-form-description-textarea {
+  width: 100%;
+  aspect-ratio: 4/1;
+  resize: vertical;
+}
+
+#bookmark-form-submit-button {
+  width: 30%;
+  margin: auto;
+}
+
+#bookmark-elements-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 60%;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.bookmark-element {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
+}
+

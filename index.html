@@ -2,7 +2,70 @@
 <html>
   <head>
     <script type="module" src="script.js"></script>
+    <link rel="stylesheet" href="style.css"/>
   </head>
   <body>
+    <header>
+    </header>
+    <main>
+      <form id="bookmark-form">
+        <label
+          id="bookmark-form-title-input-label"
+          for="bookmark-form-title-input">
+          Title:
+        </label>
+        <input id="bookmark-form-title-input"
+          type="text"
+          placeholder="Enter bookmark title"
+          required
+        />
+        <label
+          id="bookmark-form-url-input-label"
+          for="bookmark-form-url-input">
+          URL:
+        </label>
+        <input id="bookmark-form-url-input"
+          type="url"
+          placeholder="http://example.com"
+          pattern="https://.*|https://.*"
+          required
+        />
+        <label 
+          id="bookmark-form-description-textarea-label"
+          for="bookmark-form-description-textarea">
+          Description:
+        </label>
+        <textarea 
+          id="bookmark-form-description-textarea"
+          name="bookmark-form-description"
+          placeholder="Enter description"
+          required>
+        </textarea>
+        <button
+          id="bookmark-form-submit-button"
+          type="submit">
+          Add
+        </button>
+      </form>
+      <section id="bookmark-elements-container">
+
+      </section>
+    </main>
+    <footer>
+    </footer>
+    <template>
+      <div class="boomark-element">
+        <div class="bookmark-element-title">
+          <a href=""></a>
+        </div>
+        <div class="bookmark-element-title">
+          <p></p>
+        </div>
+        <div class="bookmark-element-buttons">
+            <button class="bookmark-element-copy-button">Copy</button>
+            <button class="bookmark-element-like-button">Copy</button>
+        </div>
+      </div>
+    </template>
   </body>
 </html>
