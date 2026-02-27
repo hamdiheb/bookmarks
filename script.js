@@ -8,7 +8,7 @@ import { getUserIds, getData, setData, clearData } from "./storage.js";
 
 const USER_STRING_PREFIX = "User_";
 
-const NO_BOOKMARKS_MESSAGE = "There's no any bookmarks yet";
+const NO_BOOKMARKS_MESSAGE = "<h2>There's no any bookmarks yet</h2>";
 
 class Bookmark {
   url = "";
@@ -143,7 +143,8 @@ function renderBookmarkElementLikeBtn(data, element, index) {
 }
 
 function renderNoBookmarksMessage() {
-  //TODO: implement setting no bookmarks message to the its container
+  clearBookmarkElementsContainer();
+  getBookmarkElementsContainer().innerHTML = NO_BOOKMARKS_MESSAGE;
 }
 //endregion
 
