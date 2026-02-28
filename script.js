@@ -58,7 +58,7 @@ function setupBookmarkAddForm() {
 
 function setupBookmarkAddFormOkBtn() {
   //TODO: implement getting the bookmark add form OK button element 
-  document.querySelector("").addEventListener("click", onClickBookmarkAddFormOkBtn);
+  document.querySelector("#add_btn").addEventListener("click", onClickBookmarkAddFormOkBtn);
 }
 
 function setupBookmarkAddFormCancelBtn() {
@@ -159,7 +159,7 @@ function onClickBookmarkAddFormOkBtn() {
   const url = document.querySelector("fm_bookmark_url").value;
   const description = document.querySelector("fm_bookmark_description").value;
 
-  if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect(description)) {
+  if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect(description) && validateTitle(title)) {
     const currentUserId = getCurrentUserId();
     const currentUserData = getData(currentUserId);
     
