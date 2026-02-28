@@ -47,7 +47,7 @@ class Bookmark {
 
 //region prepare
 function setupUserSelect() {
-  getUserSelect().addEventListener("change", onInputUserSelect);
+  getUserSelect().addEventListener("change", onChangeUserSelect);
 }
 
 function setupBookmarkAddForm() {
@@ -149,7 +149,7 @@ function onLoadWindow() {
   dispatchUserSelectInputEvent();
 }
 
-function onInputUserSelect(event) {
+function onChangeUserSelect(event) {
   renderBookmarkElements(getData(getCurrentUserId()));
 }
 
@@ -172,7 +172,7 @@ function onClickBookmarkAddFormOkBtn() {
 
 function onClickBookmarkAddFormCancelBtn() {
   //TODO: implement bookmark add form input elements
-  const title = document.querySelector("#fm_bookmark_title");
+  const title = document.querySelector("#fm_bookmark_title").value="";
   const url = document.querySelector("#fm_bookmark_url").value = "";
   const description = document.querySelector("#fm_bookmark_description").value = "";
 }
@@ -190,6 +190,15 @@ function onClickBookmarkAddFormCancelBtn() {
 //       `Failed to copy URL '${url}' to clipboard:\n${error}`;
 //     })
 // }
+
+function onClickBookmarkElementCopyBtn(event){
+    let url = `${document.URL}/1/124`;
+
+    if(navigator.clipboard.writeText(url)){
+        alert("URL Copied");
+        console.log(url);
+    }
+}
 
 function onClickBookmarkElementLikeBtn(event) {
   const likeBtn = event.target;
