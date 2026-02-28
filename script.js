@@ -157,7 +157,7 @@ function onClickBookmarkAddFormOkBtn() {
   const url = document.querySelector("fm_bookmark_url").value;
   const description = document.querySelector("fm_bookmark_description").value;
 
-  if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect()) {
+  if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect(description)) {
     const currentUserId = getCurrentUserId();
     const currentUserData = getData(currentUserId);
     
