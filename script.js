@@ -17,6 +17,7 @@ class Bookmark {
   likeCount = 0;
 
   constructor(url, description) {
+    this.title = title;
     this.url = url;
     this.description = description;
     this.timestamp = new Date();
@@ -62,7 +63,7 @@ function setupBookmarkAddFormOkBtn() {
 
 function setupBookmarkAddFormCancelBtn() {
   //TODO: implement getting the bookmark add form Cancel button element
-  document.querySelector("").addEventListener("click", onClickBookmarkAddFormCancelBtn);
+  document.querySelector("#clear_btn").addEventListener("click", onClickBookmarkAddFormCancelBtn);
 }
 //endregion
 
@@ -154,6 +155,7 @@ function onInputUserSelect(event) {
 
 function onClickBookmarkAddFormOkBtn() {
   //TODO: implement bookmark add form input elements
+  const title = document.querySelector("#fm_bookmark_title").value;
   const url = document.querySelector("fm_bookmark_url").value;
   const description = document.querySelector("fm_bookmark_description").value;
 
@@ -161,7 +163,7 @@ function onClickBookmarkAddFormOkBtn() {
     const currentUserId = getCurrentUserId();
     const currentUserData = getData(currentUserId);
     
-    currentUserData.unshift(new Object(url, description));
+    currentUserData.unshift(new Object(title, url, description));
     setData(currentUserId, currentUserData);
 
     dispatchUserSelectInputEvent();
@@ -170,8 +172,9 @@ function onClickBookmarkAddFormOkBtn() {
 
 function onClickBookmarkAddFormCancelBtn() {
   //TODO: implement bookmark add form input elements
-  const url = document.querySelector("URL input query string").value = "";
-  const description = document.querySelector("Description input query string").value = "";
+  const title = document.querySelector("#fm_bookmark_title");
+  const url = document.querySelector("#fm_bookmark_url").value = "";
+  const description = document.querySelector("#fm_bookmark_description").value = "";
 }
 
 // function onClickBookmarkElementCopyBtn(event) {
