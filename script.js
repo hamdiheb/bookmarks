@@ -46,7 +46,7 @@ class Bookmark {
 
 //region prepare
 function setupUserSelect() {
-  getUserSelect().addEventListener("input", onInputUserSelect);
+  getUserSelect().addEventListener("change", onInputUserSelect);
 }
 
 function setupBookmarkAddForm() {
@@ -154,8 +154,8 @@ function onInputUserSelect(event) {
 
 function onClickBookmarkAddFormOkBtn() {
   //TODO: implement bookmark add form input elements
-  const url = document.querySelector("URL input query string").value;
-  const description = document.querySelector("Description input query string").value;
+  const url = document.querySelector("fm_bookmark_url").value;
+  const description = document.querySelector("fm_bookmark_description").value;
 
   if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect()) {
     const currentUserId = getCurrentUserId();
@@ -174,17 +174,19 @@ function onClickBookmarkAddFormCancelBtn() {
   const description = document.querySelector("Description input query string").value = "";
 }
 
-function onClickBookmarkElementCopyBtn(event) {
-  const url = event.target.data.url;
+// function onClickBookmarkElementCopyBtn(event) {
+//   const url = event.target.data.url;
 
-  navigator.clipboard.writeText(url)
-    .then(() => {
-      console.log(`URL '${url}' successfully copied to clipboard`);
-    })
-    .catch((error) => {
-      `Failed to copy URL '${url}' to clipboard:\n${error}`;
-    })
-}
+//   navigator.clipboard.writeText(url)
+//     .then(() => {
+//       console.log(`URL '${url}' successfully copied to clipboard`);
+//     })function renderBookmarkElement(bookmarkData, index) {
+// ￼
+
+//     .catch((error) => {
+//       `Failed to copy URL '${url}' to clipboard:\n${error}`;
+//     })
+// }
 
 function onClickBookmarkElementLikeBtn(event) {
   const likeBtn = event.target;
@@ -203,7 +205,7 @@ function getCurrentUserId() {
 
 function getUserSelect() {
   //TODO: implement getting user select element from the page, when it will be ready.
-  //return document.getElementById("user-select");
+  return document.querySelector("#user_selector");
 }
 
 function dispatchUserSelectInputEvent() {
