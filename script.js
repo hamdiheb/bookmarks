@@ -30,20 +30,18 @@ function setupUserSelect() {
 }
 
 //creating a Bookmark object, updating the user’s stored bookmarks (creating the list if it doesn’t exist)
-function bookmarkHandler(title,url,description,userID){
+function saveBookmark(title,url,description,userID){
   //TODO  if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect(description) && validateTitle(title)) {
-  const newbookMark = new Bookmark(title,url,description);
-  let userbookMarks = [];
+  const newBookmark = new Bookmark(title,url,description);
+  let userBookmarks = getData(userID);
 
-  if(!getData(userID)){
+  if(!userBookmarks){
     console.log("User have no Bookmark , creating new one");
-    userbookMarks.push(newbookMark);
-    setData(userID,userbookMarks);
+    userBookmarks=[newBookmark];
   }else{
-    userbookMarks = getData(userID);
-    userbookMarks.unshift(newbookMark);
-    setData(userID,userbookMarks)
+    userBookmarks.unshift(newBookmark);
   }
+  setData(userID,userBookmarks)
 }
 
 //Handles adding a new bookmark for the selected user and wiring the form button to trigger this process on click.
@@ -54,7 +52,7 @@ function setupBookmarkAddForm() {
   const userID = document.querySelector("#user_selector");
   const bookmarkAddBtn = document.querySelector("#bookmark_add_btn");
   bookmarkAddBtn.addEventListener("click", (event) => {
-        bookmarkHandler(bookmarkTitle.value,bookmarkURL.value,bookmarkDescription.value,userID.value);
+        saveBookmark(bookmarkTitle.value,bookmarkURL.value,bookmarkDescription.value,userID.value);
         event.preventDefault();
   })
 }
