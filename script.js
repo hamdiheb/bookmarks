@@ -11,11 +11,6 @@ const USER_STRING_PREFIX = "User_";
 const NO_BOOKMARKS_MESSAGE = "There's no any bookmarks yet";
 
 class Bookmark {
-  url = "";
-  description = "";
-  timestamp = 0;
-  likeCount = 0;
-
   constructor(url, description) {
     this.title = title;
     this.url = url;
@@ -23,31 +18,15 @@ class Bookmark {
     this.timestamp = new Date();
     this.likeCount = 0;
   }
-
-  getUrl() {
-    return this.url;
-  }
-
-  getDescription() {
-    return this.description;
-  }
-
-  getDateString() {
-    return this.timestamp.toLocaleString();
-  }
-
-  getLikeCount() {
-    return this.likeCount;
-  }
-
-  addLikeCount() {
-    return ++this.likeCount;
-  }
 }
 
-//region prepare
+//initializes the user selection dropdown by attaching a change event listener to the #user_selector element
+//When event is lunched the UI will be updated by rendering the corresponding bookmarks
 function setupUserSelect() {
-  getUserSelect().addEventListener("change", onChangeUserSelect);
+  const userSelector = document.querySelector("#user_selector");
+  userSelector.addEventListener("change", (event) => {
+    renderBookmarkElement(getData(event.target.value))
+  });
 }
 
 function setupBookmarkAddForm() {
@@ -209,17 +188,6 @@ function onClickBookmarkElementLikeBtn(event) {
 }
 //endregion
 
-
-//region utilities
-function getCurrentUserId() {
-  return getUserSelect().value;
-}
-
-function getUserSelect() {
-  //TODO: implement getting user select element from the page, when it will be ready.
-  return document.querySelector("#user_selector");
-}
-
 function dispatchUserSelectInputEvent() {
   getUserSelect().dispatchEvent(new Event("input"));
 }
@@ -245,3 +213,9 @@ function checkIsDescriptionCorrect(description) {
 
 //TODO: uncomment when script will be ready.
 //window.onload = onLoadWindow();
+
+function init(){
+  setupUserSelect();
+}
+
+init();
