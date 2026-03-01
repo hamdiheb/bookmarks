@@ -4,5 +4,22 @@
     <script type="module" src="script.js"></script>
   </head>
   <body>
+    <header>
+      <select id="user_selector">
+        <option>1</option>
+        <option>2</option>
+      </select>
+      <main>
+        <form>
+          <label>Title</label>
+          <input type="text" placeholder="Bookmark Title" id="fm_bookmark_title"/>
+          <label>URL</label>
+          <input type="text" placeholder="Bookmark URL" id="fm_bookmark_url"/>
+          <label>Description</label>
+          <textarea id="fm_bookmark_description"></textarea>
+          <button id="bookmark_add_btn">Add Bookmark</button>
+        </form>
+      </main>
+    </header>
   </body>
 </html>
