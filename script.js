@@ -11,7 +11,7 @@ const USER_STRING_PREFIX = "User_";
 const NO_BOOKMARKS_MESSAGE = "There's no any bookmarks yet";
 
 class Bookmark {
-  constructor(url, description) {
+  constructor(title,url,description) {
     this.title = title;
     this.url = url;
     this.description = description;
@@ -29,23 +29,35 @@ function setupUserSelect() {
   });
 }
 
+//creating a Bookmark object, updating the user’s stored bookmarks (creating the list if it doesn’t exist)
+function bookmarkHandler(title,url,description,userID){
+  //TODO  if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect(description) && validateTitle(title)) {
+  const newbookMark = new Bookmark(title,url,description);
+  let userbookMarks = [];
+
+  if(!getData(userID)){
+    console.log("User have no Bookmark , creating new one");
+    userbookMarks.push(newbookMark);
+    setData(userID,userbookMarks);
+  }else{
+    userbookMarks = getData(userID);
+    userbookMarks.unshift(newbookMark);
+    setData(userID,userbookMarks)
+  }
+}
+
+//Handles adding a new bookmark for the selected user and wiring the form button to trigger this process on click.
 function setupBookmarkAddForm() {
-  //TODO: If it's needed add setup other bookmark add form elements
-  setupBookmarkAddFormOkBtn();
-  setupBookmarkAddFormCancelBtn();
+  const bookmarkTitle = document.querySelector("#fm_bookmark_title");
+  const bookmarkURL = document.querySelector("#fm_bookmark_url");
+  const bookmarkDescription = document.querySelector("#fm_bookmark_description");
+  const userID = document.querySelector("#user_selector");
+  const bookmarkAddBtn = document.querySelector("#bookmark_add_btn");
+  bookmarkAddBtn.addEventListener("click", (event) => {
+        bookmarkHandler(bookmarkTitle.value,bookmarkURL.value,bookmarkDescription.value,userID.value);
+        event.preventDefault();
+  })
 }
-
-function setupBookmarkAddFormOkBtn() {
-  //TODO: implement getting the bookmark add form OK button element 
-  document.querySelector("#add_btn").addEventListener("click", onClickBookmarkAddFormOkBtn);
-}
-
-function setupBookmarkAddFormCancelBtn() {
-  //TODO: implement getting the bookmark add form Cancel button element
-  document.querySelector("#clear_btn").addEventListener("click", onClickBookmarkAddFormCancelBtn);
-}
-//endregion
-
 
 //region render
 function renderUserSelect() {
@@ -128,48 +140,6 @@ function onLoadWindow() {
   dispatchUserSelectInputEvent();
 }
 
-function onChangeUserSelect(event) {
-  renderBookmarkElements(getData(getCurrentUserId()));
-}
-
-function onClickBookmarkAddFormOkBtn() {
-  //TODO: implement bookmark add form input elements
-  const title = document.querySelector("#fm_bookmark_title").value;
-  const url = document.querySelector("fm_bookmark_url").value;
-  const description = document.querySelector("fm_bookmark_description").value;
-
-  if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect(description) && validateTitle(title)) {
-    const currentUserId = getCurrentUserId();
-    const currentUserData = getData(currentUserId);
-    
-    currentUserData.unshift(new Object(title, url, description));
-    setData(currentUserId, currentUserData);
-
-    dispatchUserSelectInputEvent();
-  }
-}
-
-function onClickBookmarkAddFormCancelBtn() {
-  //TODO: implement bookmark add form input elements
-  const title = document.querySelector("#fm_bookmark_title").value="";
-  const url = document.querySelector("#fm_bookmark_url").value = "";
-  const description = document.querySelector("#fm_bookmark_description").value = "";
-}
-
-// function onClickBookmarkElementCopyBtn(event) {
-//   const url = event.target.data.url;
-
-//   navigator.clipboard.writeText(url)
-//     .then(() => {
-//       console.log(`URL '${url}' successfully copied to clipboard`);
-//     })function renderBookmarkElement(bookmarkData, index) {
-// ￼
-
-//     .catch((error) => {
-//       `Failed to copy URL '${url}' to clipboard:\n${error}`;
-//     })
-// }
-
 function onClickBookmarkElementCopyBtn(event){
     let url = `${document.URL}/1/124`;
 
@@ -215,7 +185,8 @@ function checkIsDescriptionCorrect(description) {
 //window.onload = onLoadWindow();
 
 function init(){
-  setupUserSelect();
+  // setupUserSelect();
+  setupBookmarkAddForm();
 }
 
 init();
