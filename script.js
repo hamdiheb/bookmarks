@@ -11,61 +11,51 @@ const USER_STRING_PREFIX = "User_";
 const NO_BOOKMARKS_MESSAGE = "There's no any bookmarks yet";
 
 class Bookmark {
-  url = "";
-  description = "";
-  timestamp = 0;
-  likeCount = 0;
-
-  constructor(url, description) {
+  constructor(title,url,description) {
+    this.title = title;
     this.url = url;
     this.description = description;
     this.timestamp = new Date();
     this.likeCount = 0;
   }
-
-  getUrl() {
-    return this.url;
-  }
-
-  getDescription() {
-    return this.description;
-  }
-
-  getDateString() {
-    return this.timestamp.toLocaleString();
-  }
-
-  getLikeCount() {
-    return this.likeCount;
-  }
-
-  addLikeCount() {
-    return ++this.likeCount;
-  }
 }
 
-//region prepare
+//initializes the user selection dropdown by attaching a change event listener to the #user_selector element
+//When event is lunched the UI will be updated by rendering the corresponding bookmarks
 function setupUserSelect() {
-  getUserSelect().addEventListener("input", onInputUserSelect);
+  const userSelector = document.querySelector("#user_selector");
+  userSelector.addEventListener("change", (event) => {
+    renderBookmarkElement(getData(event.target.value))
+  });
 }
 
+//creating a Bookmark object, updating the user’s stored bookmarks (creating the list if it doesn’t exist)
+function saveBookmark(title,url,description,userID){
+  //TODO  if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect(description) && validateTitle(title)) {
+  const newBookmark = new Bookmark(title,url,description);
+  let userBookmarks = getData(userID);
+
+  if(!userBookmarks){
+    console.log("User have no Bookmark , creating new one");
+    userBookmarks=[newBookmark];
+  }else{
+    userBookmarks.unshift(newBookmark);
+  }
+  setData(userID,userBookmarks)
+}
+
+//Handles adding a new bookmark for the selected user and wiring the form button to trigger this process on click.
 function setupBookmarkAddForm() {
-  setupBookmarkAddFormOkBtn();
-  //TODO check the button necessity when the page will be available
-  // setupBookmarkAddFormCancelBtn();
+  const bookmarkTitle = document.querySelector("#fm_bookmark_title");
+  const bookmarkURL = document.querySelector("#fm_bookmark_url");
+  const bookmarkDescription = document.querySelector("#fm_bookmark_description");
+  const userID = document.querySelector("#user_selector");
+  const bookmarkAddBtn = document.querySelector("#bookmark_add_btn");
+  bookmarkAddBtn.addEventListener("click", (event) => {
+        saveBookmark(bookmarkTitle.value,bookmarkURL.value,bookmarkDescription.value,userID.value);
+        event.preventDefault();
+  })
 }
-
-function setupBookmarkAddFormOkBtn() {
-  //TODO: check the button id when the page will be available
-  document.getElementById("add_btn").addEventListener("click", onClickBookmarkAddFormOkBtn);
-}
-
-function setupBookmarkAddFormCancelBtn() {
-  //TODO: implement getting the bookmark add form Cancel button element
-  document.querySelector("").addEventListener("click", onClickBookmarkAddFormCancelBtn);
-}
-//endregion
-
 
 //region render
 function renderUserSelect() {
@@ -148,42 +138,13 @@ function onLoadWindow() {
   dispatchUserSelectInputEvent();
 }
 
-function onInputUserSelect(event) {
-  renderBookmarkElements(getData(getCurrentUserId()));
-}
+function onClickBookmarkElementCopyBtn(event){
+    let url = `${document.URL}/1/124`;
 
-function onClickBookmarkAddFormOkBtn() {
-  //TODO: implement bookmark add form input elements
-  const url = document.querySelector("URL input query string").value;
-  const description = document.querySelector("Description input query string").value;
-
-  if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect()) {
-    const currentUserId = getCurrentUserId();
-    const currentUserData = getData(currentUserId);
-    
-    currentUserData.unshift(new Object(url, description));
-    setData(currentUserId, currentUserData);
-
-    dispatchUserSelectInputEvent();
-  }
-}
-
-function onClickBookmarkAddFormCancelBtn() {
-  //TODO: implement bookmark add form input elements
-  const url = document.querySelector("URL input query string").value = "";
-  const description = document.querySelector("Description input query string").value = "";
-}
-
-function onClickBookmarkElementCopyBtn(event) {
-  const url = event.target.data.url;
-
-  navigator.clipboard.writeText(url)
-    .then(() => {
-      console.log(`URL '${url}' successfully copied to clipboard`);
-    })
-    .catch((error) => {
-      `Failed to copy URL '${url}' to clipboard:\n${error}`;
-    })
+    if(navigator.clipboard.writeText(url)){
+        alert("URL Copied");
+        console.log(url);
+    }
 }
 
 function onClickBookmarkElementLikeBtn(event) {
@@ -194,17 +155,6 @@ function onClickBookmarkElementLikeBtn(event) {
   likeBtn.innerText = bookmark.addLikeCount();
 }
 //endregion
-
-
-//region utilities
-function getCurrentUserId() {
-  return getUserSelect().value;
-}
-
-function getUserSelect() {
-  // TODO: check the select element id when the page will be available
-  return document.getElementById("user_selector");
-}
 
 function dispatchUserSelectInputEvent() {
   getUserSelect().dispatchEvent(new Event("input"));
@@ -231,3 +181,10 @@ function checkIsDescriptionCorrect(description) {
 
 //TODO: uncomment when script will be ready.
 //window.onload = onLoadWindow();
+
+function init(){
+  // setupUserSelect();
+  setupBookmarkAddForm();
+}
+
+init();
