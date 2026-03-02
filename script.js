@@ -54,6 +54,7 @@ function setupBookmarkAddForm() {
   const bookmarkAddBtn = document.querySelector('#bookmark_add_btn')
   bookmarkAddBtn.addEventListener('click', (event) => {
     saveBookmark(bookmarkTitle.value, bookmarkURL.value, bookmarkDescription.value, userID.value)
+    renderBookmarks(getData(userID.value))
     event.preventDefault()
   })
 }
@@ -70,6 +71,7 @@ function renderUserSelect() {
 
 function clearBookmarks(sectionBookmarks) {
   // sectionBookmarks.removeChild(sectionBookmarks.firstElementChild)
+  sectionBookmarks.innerHTML = ``
 }
 
 // Creates and returns a DOM element representing a single bookmark card
@@ -89,6 +91,8 @@ function createBookmarkCard(bookmarkData) {
   bookmarkLike.textContent = `${bookmarkData.likeCount} Like`
   bookmarkShare.textContent = 'Share'
 
+  bookmarkLike.addEventListener('click', () => addLike())
+  bookmarkShare.addEventListener('click', () => shareBookmark(bookmarkCard))
   bookmarkSetting.append(bookmarkLike, bookmarkShare)
   bookmarkCard.append(bookmarkTitle, bookmarkDescription, bookmarkTime, bookmarkSetting)
   return bookmarkCard
@@ -97,10 +101,11 @@ function createBookmarkCard(bookmarkData) {
 // Renders a list of bookmarks into the #bookmarks section
 function renderBookmarks(bookmarks) {
   const sectionBookmarks = document.querySelector('#bookmarks')
-  // TODO:clearBookmarks(sectionBookmarks)
+  clearBookmarks(sectionBookmarks)
   if (!bookmarks) {
     renderNoBookmarksMessage()
   } else {
+    console.log(bookmarks.length)
     bookmarks.forEach((bookmark) => {
       const bookmarkCard = createBookmarkCard(bookmark)
       sectionBookmarks.append(bookmarkCard)
@@ -113,7 +118,14 @@ function renderNoBookmarksMessage() {
 }
 //endregion
 
-function onClickBookmarkElementCopyBtn(event) {
+function addLike() {}
+
+function shareBookmark(bookmarkCard) {
+  navigator.clipboard.writeText(bookmarkCard)
+  console.log('hi', bookmarkCard)
+}
+
+function shareBookmarkLink(event) {
   let url = `${document.URL}/1/124`
 
   if (navigator.clipboard.writeText(url)) {
@@ -145,6 +157,8 @@ function checkIsDescriptionCorrect(description) {
 //window.onload = onLoadWindow();
 
 function init() {
+  const initUser = document.querySelector('#user_selector')
+  renderBookmarks(getData(initUser.value))
   setupUserSelect()
   setupBookmarkAddForm()
 }
