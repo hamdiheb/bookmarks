@@ -17,6 +17,7 @@ class Bookmark {
     this.description = description
     this.timestamp = new Date()
     this.likeCount = 0
+    this.bookmarkID = crypto.randomUUID() //this function will created random crypted ID by bookmark
   }
 }
 
@@ -92,7 +93,7 @@ function createBookmarkCard(bookmarkData) {
   bookmarkShare.textContent = 'Share'
 
   bookmarkLike.addEventListener('click', () => addLike(bookmarkData))
-  bookmarkShare.addEventListener('click', () => shareBookmark(bookmarkCard))
+  bookmarkShare.addEventListener('click', () => shareBookmark(bookmarkData))
   bookmarkSetting.append(bookmarkLike, bookmarkShare)
   bookmarkCard.append(bookmarkTitle, bookmarkDescription, bookmarkTime, bookmarkSetting)
   return bookmarkCard
@@ -131,26 +132,13 @@ function addLike(bookmarkData) {
   renderBookmarks(updatedBookmarks)
 }
 
+// Generates a shareable link for a specific bookmark and copies it to the clipboard.
 function shareBookmark(bookmarkCard) {
-  navigator.clipboard.writeText(bookmarkCard)
-  console.log('hi', bookmarkCard)
-}
-
-function shareBookmarkLink(event) {
-  let url = `${document.URL}/1/124`
-
+  const currentuserID = document.querySelector('#user_selector').value
+  const url = `${window.location.origin}/user=${currentuserID}&bookmark=${bookmarkCard.bookmarkID}`
   if (navigator.clipboard.writeText(url)) {
-    alert('URL Copied')
-    console.log(url)
+    alert(`Url Copied ${url}`)
   }
-}
-
-function onClickBookmarkElementLikeBtn(event) {
-  const likeBtn = event.target
-  const bookmarkIndex = likeBtn.dataset.bookmarkIndex
-  const bookmark = getData(getCurrentUserId())[bookmarkIndex]
-
-  likeBtn.innerText = bookmark.addLikeCount()
 }
 
 function checkIsUrlCorrect(url) {
