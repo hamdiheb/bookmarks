@@ -91,7 +91,7 @@ function createBookmarkCard(bookmarkData) {
   bookmarkLike.textContent = `${bookmarkData.likeCount} Like`
   bookmarkShare.textContent = 'Share'
 
-  bookmarkLike.addEventListener('click', () => addLike())
+  bookmarkLike.addEventListener('click', () => addLike(bookmarkData))
   bookmarkShare.addEventListener('click', () => shareBookmark(bookmarkCard))
   bookmarkSetting.append(bookmarkLike, bookmarkShare)
   bookmarkCard.append(bookmarkTitle, bookmarkDescription, bookmarkTime, bookmarkSetting)
@@ -105,7 +105,6 @@ function renderBookmarks(bookmarks) {
   if (!bookmarks) {
     renderNoBookmarksMessage()
   } else {
-    console.log(bookmarks.length)
     bookmarks.forEach((bookmark) => {
       const bookmarkCard = createBookmarkCard(bookmark)
       sectionBookmarks.append(bookmarkCard)
@@ -118,7 +117,19 @@ function renderNoBookmarksMessage() {
 }
 //endregion
 
-function addLike() {}
+//Increases the like count of a specific bookmark and updates the stored data for the selected user.
+function addLike(bookmarkData) {
+  const currentuserID = document.querySelector('#user_selector').value
+  const currentuserBookmarks = getData(currentuserID)
+  const updatedBookmarks = currentuserBookmarks.map((element) => {
+    if (element.timestamp == bookmarkData.timestamp) {
+      element.likeCount++
+    }
+    return element
+  })
+  setData(currentuserID, updatedBookmarks)
+  renderBookmarks(updatedBookmarks)
+}
 
 function shareBookmark(bookmarkCard) {
   navigator.clipboard.writeText(bookmarkCard)
