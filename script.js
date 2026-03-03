@@ -116,7 +116,6 @@ function renderBookmarks(bookmarks) {
 function renderNoBookmarksMessage() {
   //TODO: implement setting no bookmarks message to the its container
 }
-//endregion
 
 //Increases the like count of a specific bookmark and updates the stored data for the selected user.
 function addLike(bookmarkData) {
@@ -132,13 +131,26 @@ function addLike(bookmarkData) {
   renderBookmarks(updatedBookmarks)
 }
 
-// Generates a shareable link for a specific bookmark and copies it to the clipboard.
-function shareBookmark(bookmarkCard) {
+//Generates a shareable link for a specific bookmark and copies it to the clipboard.
+async function shareBookmark(bookmarkCard) {
   const currentuserID = document.querySelector('#user_selector').value
-  const url = `${window.location.origin}/user=${currentuserID}&bookmark=${bookmarkCard.bookmarkID}`
-  if (navigator.clipboard.writeText(url)) {
-    alert(`Url Copied ${url}`)
-  }
+  const url = `${window.location.origin}/?user=${currentuserID}&bookmark=${bookmarkCard.bookmarkID}`
+  await navigator.clipboard.writeText(url)
+  alert('URL COPIED')
+}
+
+//Reads user and bookmark IDs from the URL and renders the corresponding shared bookmark.
+function renderSharedBookmarkFromURL() {
+  const query = new URLSearchParams(window.location.search)
+  const selectedUserId = query.get('user')
+  const selectedBookmarkID = query.get('bookmark')
+
+  const userBookmarks = getData(selectedUserId)
+  const bookmarkToRender = userBookmarks.filter(
+    (userBookmark) => userBookmark.bookmarkID == selectedBookmarkID,
+  )
+
+  renderBookmarks(bookmarkToRender)
 }
 
 function checkIsUrlCorrect(url) {
@@ -150,16 +162,13 @@ function checkIsDescriptionCorrect(description) {
   //TODO: implement description check logic and message show if it's incorrect.
   return true
 }
-//endregion
-
-//TODO: uncomment when script will be ready.
-//window.onload = onLoadWindow();
 
 function init() {
   const initUser = document.querySelector('#user_selector')
   renderBookmarks(getData(initUser.value))
   setupUserSelect()
   setupBookmarkAddForm()
+  renderSharedBookmarkFromURL()
 }
 
 init()
