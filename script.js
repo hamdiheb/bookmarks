@@ -144,13 +144,15 @@ function renderSharedBookmarkFromURL() {
   const query = new URLSearchParams(window.location.search)
   const selectedUserId = query.get('user')
   const selectedBookmarkID = query.get('bookmark')
-
-  const userBookmarks = getData(selectedUserId)
-  const bookmarkToRender = userBookmarks.filter(
-    (userBookmark) => userBookmark.bookmarkID == selectedBookmarkID,
-  )
-
-  renderBookmarks(bookmarkToRender)
+  if (selectedUserId && selectedBookmarkID) {
+    const currentUser = document.querySelector('#user_selector')
+    currentUser.value = selectedUserId
+    const userBookmarks = getData(selectedUserId)
+    const bookmarkToRender = userBookmarks.filter(
+      (userBookmark) => userBookmark.bookmarkID == selectedBookmarkID,
+    )
+    renderBookmarks(bookmarkToRender)
+  }
 }
 
 function checkIsUrlCorrect(url) {
