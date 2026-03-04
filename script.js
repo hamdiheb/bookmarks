@@ -86,7 +86,7 @@ function onClickBookmarkFormAddButton() {
   const url = BOOKMARK_ADD_FORM_URL.value;
   const description = BOOKMARK_ADD_FORM_DESCRIPTION.value;
 
-  if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect(description)) {
+  if (verifyTitle(title) && verifyUrl(url) && verifyDescription(description)) {
     let currentUserId = getCurrentUserId();
     let currentUserData = getData(currentUserId);
     if (!currentUserData) {
@@ -140,15 +140,28 @@ function dispatchUserSelectChangeEvent() {
   USER_SELECT.dispatchEvent(new Event("change"));
 }
 
+function verifyTitle(title) {
+  if (title) {
+    return true;
+  }
+  alert("Title couldn't't be empty");
+}
 
-function checkIsUrlCorrect(url) {
-  //TODO: implement url check logic and message show if it's incorrect.
+function verifyUrl(url) {
+  if (!/https?:\/\/\S+/.test(url)) {
+    alert("URL should start from http:// or https://");
+  }
+  if (/\s+/.test(url)) {
+    alert("URL couldn't contain spaces");
+  }
   return true;
 }
 
-function checkIsDescriptionCorrect(description) {
-  //TODO: implement description check logic and message show if it's incorrect.
-  return true;
+function verifyDescription(description) {
+  if (description) {
+    return true;
+  }
+  alert("Description couldn't be empty");
 }
 //endregion
 
