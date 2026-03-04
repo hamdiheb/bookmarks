@@ -12,6 +12,7 @@ const NO_BOOKMARKS_MESSAGE = "<h2>There's no any bookmarks yet</h2>";
 const userSelect = document.getElementById("user-select");
 const bookmarkAddButton = document.querySelector("#bookmark-form-submit-button");
 const bookmarkClearButton = document.querySelector("#bookmark-form-cancel-button");
+const bookmarkElementsContainer = document.getElementById("bookmark-elements-container");
 const bookmarkTemplate = document.getElementById("bookmark-element-template");
 
 
@@ -34,6 +35,7 @@ class Bookmark {
 //region prepare
 function setupPageControlElements() {
   userSelect.options.length = 0;
+
   for (const id of getUserIds()) {
     userSelect.add(new Option(`${USER_STRING_PREFIX}${id}`, id));
   }
@@ -41,7 +43,7 @@ function setupPageControlElements() {
     renderBookmarks(getData(getCurrentUserId()))
   );
 
-  bookmarkAddButton.addEventListener("click", onClickBookmarkFormAddBtn)
+  bookmarkAddButton.addEventListener("click", onClickBookmarkFormAddButton)
   bookmarkClearButton.addEventListener("click", clearBookmarkForm);
 }
 //endregion
@@ -49,13 +51,14 @@ function setupPageControlElements() {
 
 //region render
 function renderBookmarks(bookmarkList) {
-  clearBookmarkElementsContainer();
+  bookmarkElementsContainer.innerHTML = "";
+
   if (bookmarkList) {
     for (let i = 0; i < bookmarkList.length; i++) {
       renderBookmarkElement(bookmarkList[i], i);
     }
   } else {
-    renderNoBookmarksMessage();
+    bookmarkElementsContainer.innerHTML = NO_BOOKMARKS_MESSAGE;
   }
 }
 
@@ -81,12 +84,7 @@ function renderBookmarkElement(data, index) {
   likeButton.innerText = data.likeCount;
   likeButton.addEventListener("click", onClickBookmarkElementLikeBtn);
   
-  getBookmarkElementsContainer().appendChild(element);
-}
-
-function renderNoBookmarksMessage() {
-  clearBookmarkElementsContainer();
-  getBookmarkElementsContainer().innerHTML = NO_BOOKMARKS_MESSAGE;
+  bookmarkElementsContainer.appendChild(element);
 }
 //endregion
 
@@ -97,7 +95,7 @@ function onLoadWindow() {
   dispatchUserSelectChangeEvent();
 }
 
-function onClickBookmarkFormAddBtn() {
+function onClickBookmarkFormAddButton() {
   const title = document.getElementById("bookmark-form-title-input").value;
   const url = document.getElementById("bookmark-form-url-input").value;
   const description = document.getElementById("bookmark-form-description-textarea").value;
@@ -117,13 +115,8 @@ function onClickBookmarkFormAddBtn() {
   }
 }
 
-function onClickBookmarkAddFormCancelBtn() {
-  const url = document.querySelector("URL input query string").value = "";
-  const description = document.querySelector("Description input query string").value = "";
-}
-
 function onClickBookmarkElementCopyBtn(event) {
-  const url = event.target.dataset.url;
+  let url = event.target.dataset.url;
 
   navigator.clipboard.writeText(url)
     .then(() => {
@@ -135,11 +128,11 @@ function onClickBookmarkElementCopyBtn(event) {
 }
 
 function onClickBookmarkElementLikeBtn(event) {
-  const likeBtn = event.target;
-  const bookmarkIndex = likeBtn.dataset.bookmarkIndex;
-  const currentUserData = getData(getCurrentUserId());
+  let likeButton = event.target;
+  let bookmarkIndex = likeButton.dataset.bookmarkIndex;
+  let currentUserData = getData(getCurrentUserId());
 
-  likeBtn.innerText = ++currentUserData[bookmarkIndex].likeCount;
+  likeButton.innerText = ++currentUserData[bookmarkIndex].likeCount;
 
   setData(getCurrentUserId(), currentUserData);
 }
