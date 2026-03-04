@@ -9,11 +9,18 @@ import { getUserIds, getData, setData, clearData } from "./storage.js";
 const USER_STRING_PREFIX = "User_";
 const NO_BOOKMARKS_MESSAGE = "<h2>There's no any bookmarks yet</h2>";
 
-const userSelect = document.getElementById("user-select");
-const bookmarkAddButton = document.querySelector("#bookmark-form-submit-button");
-const bookmarkClearButton = document.querySelector("#bookmark-form-cancel-button");
-const bookmarkElementsContainer = document.getElementById("bookmark-elements-container");
-const bookmarkTemplate = document.getElementById("bookmark-element-template");
+const USER_SELECT = document.getElementById("user-select");
+
+const BOOKMARK_ADD_FORM = document.getElementById("bookmark-form");
+const BOOKMARK_ADD_FORM_TITLE = document.getElementById("bookmark-form-title-input");
+const BOOKMARK_ADD_FORM_URL = document.getElementById("bookmark-form-url-input");
+const BOOKMARK_ADD_FORM_DESCRIPTION = document.getElementById("bookmark-form-description-textarea");
+const BOOKMARK_ADD_BUTTON = document.querySelector("#bookmark-form-submit-button");
+const BOOKMARK_CLEAR_BUTTON = document.querySelector("#bookmark-form-cancel-button");
+
+const BOOKMARK_ELEMENTS_CONTAINER = document.getElementById("bookmark-elements-container");
+
+const BOOKMARK_TEMPLATE = document.getElementById("bookmark-element-template");
 
 
 class Bookmark {
@@ -34,36 +41,36 @@ class Bookmark {
 
 //region prepare
 function setupPageControlElements() {
-  userSelect.options.length = 0;
+  USER_SELECT.options.length = 0;
 
   for (const id of getUserIds()) {
-    userSelect.add(new Option(`${USER_STRING_PREFIX}${id}`, id));
+    USER_SELECT.add(new Option(`${USER_STRING_PREFIX}${id}`, id));
   }
-  userSelect.addEventListener("change", () =>
+  USER_SELECT.addEventListener("change", () =>
     renderBookmarks(getData(getCurrentUserId()))
   );
 
-  bookmarkAddButton.addEventListener("click", onClickBookmarkFormAddButton)
-  bookmarkClearButton.addEventListener("click", clearBookmarkForm);
+  BOOKMARK_ADD_BUTTON.addEventListener("click", onClickBookmarkFormAddButton)
+  BOOKMARK_CLEAR_BUTTON.addEventListener("click", clearBookmarkForm);
 }
 //endregion
 
 
 //region render
 function renderBookmarks(bookmarkList) {
-  bookmarkElementsContainer.innerHTML = "";
+  BOOKMARK_ELEMENTS_CONTAINER.innerHTML = "";
 
   if (bookmarkList) {
     for (let i = 0; i < bookmarkList.length; i++) {
       renderBookmarkElement(bookmarkList[i], i);
     }
   } else {
-    bookmarkElementsContainer.innerHTML = NO_BOOKMARKS_MESSAGE;
+    BOOKMARK_ELEMENTS_CONTAINER.innerHTML = NO_BOOKMARKS_MESSAGE;
   }
 }
 
 function renderBookmarkElement(data, index) {
-  let element = bookmarkTemplate.content.cloneNode(true);
+  let element = BOOKMARK_TEMPLATE.content.cloneNode(true);
 
   let titleElement = element.querySelector(".bookmark-element-title a");
   titleElement.innerText = data.title;
@@ -84,7 +91,7 @@ function renderBookmarkElement(data, index) {
   likeButton.innerText = data.likeCount;
   likeButton.addEventListener("click", onClickBookmarkElementLikeBtn);
   
-  bookmarkElementsContainer.appendChild(element);
+  BOOKMARK_ELEMENTS_CONTAINER.appendChild(element);
 }
 //endregion
 
@@ -96,9 +103,9 @@ function onLoadWindow() {
 }
 
 function onClickBookmarkFormAddButton() {
-  const title = document.getElementById("bookmark-form-title-input").value;
-  const url = document.getElementById("bookmark-form-url-input").value;
-  const description = document.getElementById("bookmark-form-description-textarea").value;
+  const title = BOOKMARK_ADD_FORM_TITLE.value;
+  const url = BOOKMARK_ADD_FORM_URL.value;
+  const description = BOOKMARK_ADD_FORM_DESCRIPTION.value;
 
   if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect(description)) {
     let currentUserId = getCurrentUserId();
@@ -141,19 +148,15 @@ function onClickBookmarkElementLikeBtn(event) {
 
 //region utilities
 function getCurrentUserId() {
-  return userSelect.value;
-}
-
-function getBookmarkForm() {
-  return document.getElementById("bookmark-form");
+  return USER_SELECT.value;
 }
 
 function clearBookmarkForm() {
-  getBookmarkForm().reset();
+  BOOKMARK_ADD_FORM.reset();
 }
 
 function dispatchUserSelectChangeEvent() {
-  userSelect.dispatchEvent(new Event("change"));
+  USER_SELECT.dispatchEvent(new Event("change"));
 }
 
 
