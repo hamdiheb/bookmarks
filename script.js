@@ -232,3 +232,10 @@ function checkIsDescriptionCorrect(description) {
 
 //TODO: uncomment when script will be ready.
 window.onload = onLoadWindow();
+
+function init(){
+  // setupUserSelect();
+  setupBookmarkAddForm();
+}
+
+init();
