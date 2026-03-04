@@ -12,6 +12,7 @@ const NO_BOOKMARKS_MESSAGE = "<h2>There's no any bookmarks yet</h2>";
 const userSelect = document.getElementById("user-select");
 const bookmarkAddButton = document.querySelector("#bookmark-form-submit-button");
 const bookmarkClearButton = document.querySelector("#bookmark-form-cancel-button");
+const bookmarkTemplate = document.getElementById("bookmark-element-template");
 
 
 class Bookmark {
@@ -47,59 +48,40 @@ function setupPageControlElements() {
 
 
 //region render
-function renderBookmarks(list) {
+function renderBookmarks(bookmarkList) {
   clearBookmarkElementsContainer();
-  if (list) {
-    for (let i = 0; i < list.length; i++) {
-      renderBookmarkElement(list[i], i);
+  if (bookmarkList) {
+    for (let i = 0; i < bookmarkList.length; i++) {
+      renderBookmarkElement(bookmarkList[i], i);
     }
   } else {
     renderNoBookmarksMessage();
   }
 }
 
-function renderBookmarkElement(bookmarkData, index) {
-  const bookmarkElement = document.getElementById("bookmark-element-template")
-    .content.cloneNode(true);
+function renderBookmarkElement(data, index) {
+  let element = bookmarkTemplate.content.cloneNode(true);
 
-  renderBookmarkElementTitle(bookmarkData, bookmarkElement);
-  renderBookmarkElementCopyBtn(bookmarkData, bookmarkElement);
-  renderBookmarkElementDescription(bookmarkData, bookmarkElement);
-  renderBookmarkElementTimestamp(bookmarkData, bookmarkElement);
-  renderBookmarkElementLikeBtn(bookmarkData, bookmarkElement, index);
-
-  getBookmarkElementsContainer().appendChild(bookmarkElement);
-}
-
-function renderBookmarkElementTitle(data, element) {
-  const titleElement = element.querySelector(".bookmark-element-title a");
-  
+  let titleElement = element.querySelector(".bookmark-element-title a");
   titleElement.innerText = data.title;
   titleElement.href = data.url;
-}
 
-function renderBookmarkElementCopyBtn(data, element) {
-  const copyBtn = element.querySelector(".bookmark-element-copy-button");
+  let copyButton = element.querySelector(".bookmark-element-copy-button");
+  copyButton.dataset.url = data.url;
+  copyButton.addEventListener("click", onClickBookmarkElementCopyBtn);
+
+  let descriptionElement = element.querySelector(".bookmark-element-description p")
+  descriptionElement.innerText = data.description;
+
+  let timestampElement = element.querySelector(".bookmark-element-timestamp p")
+  timestampElement.innerText = data.timestamp.toLocaleString();
   
-  copyBtn.dataset.url = data.url;
-  copyBtn.addEventListener("click", onClickBookmarkElementCopyBtn);
-}
-
-function renderBookmarkElementDescription(data, element) {
-  element.querySelector(".bookmark-element-description p").innerText = data.description;
-}
-
-function renderBookmarkElementTimestamp(data, element) {
-  element.querySelector(".bookmark-element-timestamp p").innerText =
-    data.timestamp.toLocaleString();
-}
-
-function renderBookmarkElementLikeBtn(data, element, index) {
-  const likeBtn = element.querySelector(".bookmark-element-like-button");
-
-  likeBtn.dataset.bookmarkIndex = index;
-  likeBtn.innerText = data.likeCount;
-  likeBtn.addEventListener("click", onClickBookmarkElementLikeBtn);
+  let likeButton = element.querySelector(".bookmark-element-like-button");
+  likeButton.dataset.bookmarkIndex = index;
+  likeButton.innerText = data.likeCount;
+  likeButton.addEventListener("click", onClickBookmarkElementLikeBtn);
+  
+  getBookmarkElementsContainer().appendChild(element);
 }
 
 function renderNoBookmarksMessage() {
