@@ -141,11 +141,7 @@ function onClickBookmarkElementLikeBtn(event) {
 
 //region utilities
 function getCurrentUserId() {
-  return getUserSelect().value;
-}
-
-function getUserSelect() {
-  return document.getElementById("user-select");
+  return userSelect.value;
 }
 
 function getBookmarkForm() {
@@ -157,16 +153,9 @@ function clearBookmarkForm() {
 }
 
 function dispatchUserSelectChangeEvent() {
-  getUserSelect().dispatchEvent(new Event("change"));
+  userSelect.dispatchEvent(new Event("change"));
 }
 
-function getBookmarkElementsContainer() {
-  return document.getElementById("bookmark-elements-container");
-}
-
-function clearBookmarkElementsContainer() {
-  getBookmarkElementsContainer().innerHTML = "";
-}
 
 function checkIsUrlCorrect(url) {
   //TODO: implement url check logic and message show if it's incorrect.
