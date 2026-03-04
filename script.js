@@ -10,6 +10,9 @@ const USER_STRING_PREFIX = "User_";
 const NO_BOOKMARKS_MESSAGE = "<h2>There's no any bookmarks yet</h2>";
 
 const userSelect = document.getElementById("user-select");
+const bookmarkAddButton = document.querySelector("#bookmark-form-submit-button");
+const bookmarkClearButton = document.querySelector("#bookmark-form-cancel-button");
+
 
 class Bookmark {
   title = "";
@@ -28,7 +31,7 @@ class Bookmark {
 }
 
 //region prepare
-function setupUserSelect() {
+function setupPageControlElements() {
   userSelect.options.length = 0;
   for (const id of getUserIds()) {
     userSelect.add(new Option(`${USER_STRING_PREFIX}${id}`, id));
@@ -36,24 +39,9 @@ function setupUserSelect() {
   userSelect.addEventListener("change", () =>
     renderBookmarks(getData(getCurrentUserId()))
   );
-}
 
-function setupBookmarkAddForm() {
-  //TODO: If it's needed add setup other bookmark add form elements
-  setupBookmarkAddFormOkBtn();
-  // setupBookmarkAddFormCancelBtn();
-}
-
-function setupBookmarkAddFormOkBtn() {
-  //TODO: implement getting the bookmark add form OK button element 
-  document
-    .querySelector("#bookmark-form-submit-button")
-    .addEventListener("click", onClickBookmarkFormAddBtn);
-}
-
-function setupBookmarkAddFormCancelBtn() {
-  //TODO: implement getting the bookmark add form Cancel button element
-  document.querySelector("").addEventListener("click", onClickBookmarkAddFormCancelBtn);
+  bookmarkAddButton.addEventListener("click", onClickBookmarkFormAddBtn)
+  bookmarkClearButton.addEventListener("click", clearBookmarkForm);
 }
 //endregion
 
@@ -123,8 +111,7 @@ function renderNoBookmarksMessage() {
 
 //region listeners
 function onLoadWindow() {
-  setupUserSelect();
-  setupBookmarkAddForm();
+  setupPageControlElements();
   dispatchUserSelectChangeEvent();
 }
 
