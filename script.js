@@ -27,14 +27,6 @@ class Bookmark {
 }
 
 //region prepare
-function setupUserData() {
-  for (const userId of getUserIds()) {
-    if (!getData(userId)) {
-      setData(userId, []);
-    }
-  }
-}
-
 function setupUserSelect() {
   getUserSelect().addEventListener("change", onChangeUserSelect);
 }
@@ -71,7 +63,7 @@ function renderUserSelect() {
 
 function renderBookmarkElements(list) {
   clearBookmarkElementsContainer();
-  if (list.length) {
+  if (list) {
     for (let i = 0; i < list.length; i++) {
       renderBookmarkElement(list[i], i);
     }
@@ -133,7 +125,6 @@ function renderNoBookmarksMessage() {
 
 //region listeners
 function onLoadWindow() {
-  setupUserData();
   setupUserSelect();
   setupBookmarkAddForm();
   renderUserSelect();
@@ -150,9 +141,12 @@ function onClickBookmarkFormAddBtn() {
   const description = document.getElementById("bookmark-form-description-textarea").value;
 
   if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect(description)) {
-    const currentUserId = getCurrentUserId();
-    const currentUserData = getData(currentUserId);
-    
+    let currentUserId = getCurrentUserId();
+    let currentUserData = getData(currentUserId);
+    if (!currentUserData) {
+      console.log(`Created new bookmarks array for user ${currentUserId} to store in the local storage`)
+      currentUserData = [];
+    }
     currentUserData.unshift(new Bookmark(title, url, description));
     setData(currentUserId, currentUserData);
     
@@ -232,10 +226,3 @@ function checkIsDescriptionCorrect(description) {
 
 //TODO: uncomment when script will be ready.
 window.onload = onLoadWindow();
-
-function init(){
-  // setupUserSelect();
-  setupBookmarkAddForm();
-}
-
-init();
