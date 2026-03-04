@@ -7,8 +7,9 @@
 import { getUserIds, getData, setData, clearData } from "./storage.js";
 
 const USER_STRING_PREFIX = "User_";
-
 const NO_BOOKMARKS_MESSAGE = "<h2>There's no any bookmarks yet</h2>";
+
+const userSelect = document.getElementById("user-select");
 
 class Bookmark {
   title = "";
@@ -28,7 +29,13 @@ class Bookmark {
 
 //region prepare
 function setupUserSelect() {
-  getUserSelect().addEventListener("change", onChangeUserSelect);
+  userSelect.options.length = 0;
+  for (const id of getUserIds()) {
+    userSelect.add(new Option(`${USER_STRING_PREFIX}${id}`, id));
+  }
+  userSelect.addEventListener("change", () =>
+    renderBookmarks(getData(getCurrentUserId()))
+  );
 }
 
 function setupBookmarkAddForm() {
@@ -52,16 +59,7 @@ function setupBookmarkAddFormCancelBtn() {
 
 
 //region render
-function renderUserSelect() {
-  const userSelect = getUserSelect();
-
-  userSelect.options.length = 0;
-  for(const id of getUserIds()) {
-    userSelect.add(new Option(`${USER_STRING_PREFIX}${id}`, id));
-  }
-}
-
-function renderBookmarkElements(list) {
+function renderBookmarks(list) {
   clearBookmarkElementsContainer();
   if (list) {
     for (let i = 0; i < list.length; i++) {
@@ -127,12 +125,7 @@ function renderNoBookmarksMessage() {
 function onLoadWindow() {
   setupUserSelect();
   setupBookmarkAddForm();
-  renderUserSelect();
   dispatchUserSelectChangeEvent();
-}
-
-function onChangeUserSelect(event) {
-  renderBookmarkElements(getData(getCurrentUserId()));
 }
 
 function onClickBookmarkFormAddBtn() {
