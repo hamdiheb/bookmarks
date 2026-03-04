@@ -1,10 +1,5 @@
-// This is a placeholder file which shows how you can access functions defined in other files.
-// It can be loaded into index.html.
-// You can delete the contents of the file once you have understood how it works.
-// Note that when running locally, in order to open a web page which uses modules, you must serve the directory over HTTP e.g. with https://www.npmjs.com/package/http-server
-// You can't open the index.html file using a file:// URL.
-
 import { getUserIds, getData, setData, clearData } from "./storage.js";
+
 
 const USER_STRING_PREFIX = "User_";
 const NO_BOOKMARKS_MESSAGE = "<h2>There's no any bookmarks yet</h2>";
@@ -22,22 +17,6 @@ const BOOKMARK_ELEMENTS_CONTAINER = document.getElementById("bookmark-elements-c
 
 const BOOKMARK_TEMPLATE = document.getElementById("bookmark-element-template");
 
-
-class Bookmark {
-  title = "";
-  url = "";
-  description = "";
-  timestamp = 0;
-  likeCount = 0;
-
-  constructor(title, url, description) {
-    this.title = title;
-    this.url = url;
-    this.description = description;
-    this.timestamp = new Date();
-    this.likeCount = 0;
-  }
-}
 
 //region prepare
 function setupPageControlElements() {
@@ -114,7 +93,9 @@ function onClickBookmarkFormAddButton() {
       console.log(`Created new bookmarks array for user ${currentUserId} to store in the local storage`)
       currentUserData = [];
     }
-    currentUserData.unshift(new Bookmark(title, url, description));
+    currentUserData.unshift(
+      {title: title, url: url, description: description, timestamp: new Date(), likeCount: 0}
+    );
     setData(currentUserId, currentUserData);
     
     clearBookmarkForm();
@@ -171,5 +152,5 @@ function checkIsDescriptionCorrect(description) {
 }
 //endregion
 
-//TODO: uncomment when script will be ready.
+
 window.onload = onLoadWindow();
