@@ -92,7 +92,7 @@ function createBookmarkCard(bookmarkData) {
   bookmarkLike.textContent = `${bookmarkData.likeCount} Like`
   bookmarkShare.textContent = 'Share'
 
-  bookmarkLike.addEventListener('click', () => addLike(bookmarkData))
+  bookmarkLike.addEventListener('click', () => addLike(bookmarkData, bookmarkLike))
   bookmarkShare.addEventListener('click', () => shareBookmark(bookmarkData))
   bookmarkSetting.append(bookmarkLike, bookmarkShare)
   bookmarkCard.append(bookmarkTitle, bookmarkDescription, bookmarkTime, bookmarkSetting)
@@ -118,17 +118,17 @@ function renderNoBookmarksMessage() {
 }
 
 //Increases the like count of a specific bookmark and updates the stored data for the selected user.
-function addLike(bookmarkData) {
+function addLike(bookmarkData, bookmarkLike) {
   const currentuserID = document.querySelector('#user_selector').value
   const currentuserBookmarks = getData(currentuserID)
   const updatedBookmarks = currentuserBookmarks.map((element) => {
-    if (element.timestamp == bookmarkData.timestamp) {
+    if (element.bookmarkID == bookmarkData.bookmarkID) {
       element.likeCount++
+      bookmarkLike.textContent = `${element.likeCount} Like`
     }
     return element
   })
   setData(currentuserID, updatedBookmarks)
-  renderBookmarks(updatedBookmarks)
 }
 
 //Generates a shareable link for a specific bookmark and copies it to the clipboard.
