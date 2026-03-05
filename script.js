@@ -4,187 +4,173 @@
 // Note that when running locally, in order to open a web page which uses modules, you must serve the directory over HTTP e.g. with https://www.npmjs.com/package/http-server
 // You can't open the index.html file using a file:// URL.
 
-import { getUserIds, getData, setData, clearData } from "./storage.js";
+import { getUserIds, getData, setData, clearData } from './storage.js'
 
-const USER_STRING_PREFIX = "User_";
+const USER_STRING_PREFIX = 'User_'
 
-const NO_BOOKMARKS_MESSAGE = "There's no any bookmarks yet";
+const NO_BOOKMARKS_MESSAGE = "There's no any bookmarks yet"
 
 class Bookmark {
-  constructor(title,url,description) {
-    this.title = title;
-    this.url = url;
-    this.description = description;
-    this.timestamp = new Date();
-    this.likeCount = 0;
+  constructor(title, url, description) {
+    this.title = title
+    this.url = url
+    this.description = description
+    this.timestamp = new Date()
+    this.likeCount = 0
+    this.bookmarkID = crypto.randomUUID() //this function will created random crypted ID by bookmark
   }
 }
 
 //initializes the user selection dropdown by attaching a change event listener to the #user_selector element
 //When event is lunched the UI will be updated by rendering the corresponding bookmarks
 function setupUserSelect() {
-  const userSelector = document.querySelector("#user_selector");
-  userSelector.addEventListener("change", (event) => {
-    renderBookmarkElement(getData(event.target.value))
-  });
+  const userSelector = document.querySelector('#user_selector')
+  userSelector.addEventListener('change', (event) => {
+    const userID = event.target.value
+    renderBookmarks(getData(userID))
+  })
 }
 
 //creating a Bookmark object, updating the user’s stored bookmarks (creating the list if it doesn’t exist)
-function saveBookmark(title,url,description,userID){
+function saveBookmark(title, url, description, userID) {
   //TODO  if (checkIsUrlCorrect(url) && checkIsDescriptionCorrect(description) && validateTitle(title)) {
-  const newBookmark = new Bookmark(title,url,description);
-  let userBookmarks = getData(userID);
+  const newBookmark = new Bookmark(title, url, description)
+  let userBookmarks = getData(userID)
 
-  if(!userBookmarks){
-    console.log("User have no Bookmark , creating new one");
-    userBookmarks=[newBookmark];
-  }else{
-    userBookmarks.unshift(newBookmark);
+  if (!userBookmarks) {
+    console.log('User have no Bookmark , creating new one')
+    userBookmarks = [newBookmark]
+  } else {
+    userBookmarks.unshift(newBookmark)
   }
-  setData(userID,userBookmarks)
+  setData(userID, userBookmarks)
 }
 
 //Handles adding a new bookmark for the selected user and wiring the form button to trigger this process on click.
 function setupBookmarkAddForm() {
-  const bookmarkTitle = document.querySelector("#fm_bookmark_title");
-  const bookmarkURL = document.querySelector("#fm_bookmark_url");
-  const bookmarkDescription = document.querySelector("#fm_bookmark_description");
-  const userID = document.querySelector("#user_selector");
-  const bookmarkAddBtn = document.querySelector("#bookmark_add_btn");
-  bookmarkAddBtn.addEventListener("click", (event) => {
-        saveBookmark(bookmarkTitle.value,bookmarkURL.value,bookmarkDescription.value,userID.value);
-        event.preventDefault();
+  const bookmarkTitle = document.querySelector('#fm_bookmark_title')
+  const bookmarkURL = document.querySelector('#fm_bookmark_url')
+  const bookmarkDescription = document.querySelector('#fm_bookmark_description')
+  const userID = document.querySelector('#user_selector')
+  const bookmarkAddBtn = document.querySelector('#bookmark_add_btn')
+  bookmarkAddBtn.addEventListener('click', (event) => {
+    saveBookmark(bookmarkTitle.value, bookmarkURL.value, bookmarkDescription.value, userID.value)
+    renderBookmarks(getData(userID.value))
+    event.preventDefault()
   })
 }
 
 //region render
 function renderUserSelect() {
-    const userSelect = getUserSelect();
+  const userSelect = getUserSelect()
 
-  userSelect.options.length = 0;
-  for(const id of getUserIds()) {
-    userSelect.add(new Option(`${USER_STRING_PREFIX}${id}`, id));
+  userSelect.options.length = 0
+  for (const id of getUserIds()) {
+    userSelect.add(new Option(`${USER_STRING_PREFIX}${id}`, id))
   }
 }
 
-function renderBookmarkElements(list) {
-  clearBookmarkElementsContainer();
+function clearBookmarks(sectionBookmarks) {
+  // sectionBookmarks.removeChild(sectionBookmarks.firstElementChild)
+  sectionBookmarks.innerHTML = ``
+}
 
-  if (list.length) {
-    for (let i = 0; i < list.length; i++) {
-      renderBookmarkElement(list[i], i);
-    }
+// Creates and returns a DOM element representing a single bookmark card
+function createBookmarkCard(bookmarkData) {
+  const bookmarkCard = document.createElement('article')
+  const bookmarkTitle = document.createElement('a')
+  const bookmarkDescription = document.createElement('p')
+  const bookmarkTime = document.createElement('date')
+  const bookmarkSetting = document.createElement('div')
+  const bookmarkLike = document.createElement('button')
+  const bookmarkShare = document.createElement('button')
+
+  bookmarkTitle.textContent = bookmarkData.title
+  bookmarkTitle.href = bookmarkData.url
+  bookmarkDescription.textContent = bookmarkData.description
+  bookmarkTime.textContent = bookmarkData.timestamp
+  bookmarkLike.textContent = `${bookmarkData.likeCount} Like`
+  bookmarkShare.textContent = 'Share'
+
+  bookmarkLike.addEventListener('click', () => addLike(bookmarkData, bookmarkLike))
+  bookmarkShare.addEventListener('click', () => shareBookmark(bookmarkData))
+  bookmarkSetting.append(bookmarkLike, bookmarkShare)
+  bookmarkCard.append(bookmarkTitle, bookmarkDescription, bookmarkTime, bookmarkSetting)
+  return bookmarkCard
+}
+
+// Renders a list of bookmarks into the #bookmarks section
+function renderBookmarks(bookmarks) {
+  const sectionBookmarks = document.querySelector('#bookmarks')
+  clearBookmarks(sectionBookmarks)
+  if (!bookmarks) {
+    renderNoBookmarksMessage()
   } else {
-    renderNoBookmarksMessage();
+    bookmarks.forEach((bookmark) => {
+      const bookmarkCard = createBookmarkCard(bookmark)
+      sectionBookmarks.append(bookmarkCard)
+    })
   }
-}
-
-function renderBookmarkElement(bookmarkData, index) {
-  // TODO: implement bookmark card element getting, when the page will be ready
-  //const bookmarkElement = template.content.cloneNode(true);
-
-  renderBookmarkElementTitle(bookmarkData, bookmarkElement);
-  renderBookmarkElementCopyBtn(bookmarkData, bookmarkElement);
-  renderBookmarkElementDescription(bookmarkData, bookmarkElement);
-  renderBookmarkElementTimestamp(bookmarkData, bookmarkElement);
-  renderBookmarkElementLikeBtn(bookmarkData, bookmarkElement, index);
-
-  getBookmarkElementsContainer().appendChild(bookmarkElement);
-}
-
-function renderBookmarkElementTitle(data, element) {
-  //TODO: implement setting title text and url on bookmark element
-}
-
-function renderBookmarkElementCopyBtn(data, element) {
-  //TODO: implement setting copy button text and click event listener on bookmark element
-  const copyBtn = clearData.querySelector();
-  
-  copyBtn.dataset.url = data.url;
-  copyBtn.addEventListener("click", onClickBookmarkElementCopyBtn);
-}
-
-function renderBookmarkElementDescription(data, element) {
-  //TODO: implement setting description text on bookmark element
-}
-
-function renderBookmarkElementTimestamp(data, element) {
-  //TODO: implement setting date text from timestamp on bookmark element
-  const timestampElement = element.querySelector("timestamp element query");
-
-  timestampElement.innerText = data.timestamp.toLocaleString();
-}
-
-function renderBookmarkElementLikeBtn(data, element, index) {
-  //TODO: implement getting bookmark element like button
-  const likeBtn = element.querySelector("like button query");
-  
-  likeBtn.dataset.bookmarkIndex = index;
-  likeBtn.innerText = data.likeCount;
-  likeBtn.addEventListener(onClickBookmarkElementLikeBtn);
 }
 
 function renderNoBookmarksMessage() {
   //TODO: implement setting no bookmarks message to the its container
 }
-//endregion
 
-
-//region listeners
-function onLoadWindow() {
-  setupUserSelect();
-  setupBookmarkAddForm();
-  renderUserSelect();
-  dispatchUserSelectInputEvent();
-}
-
-function onClickBookmarkElementCopyBtn(event){
-    let url = `${document.URL}/1/124`;
-
-    if(navigator.clipboard.writeText(url)){
-        alert("URL Copied");
-        console.log(url);
+//Increases the like count of a specific bookmark and updates the stored data for the selected user.
+function addLike(bookmarkData, bookmarkLike) {
+  const currentuserID = document.querySelector('#user_selector').value
+  const currentuserBookmarks = getData(currentuserID)
+  const updatedBookmarks = currentuserBookmarks.map((element) => {
+    if (element.bookmarkID == bookmarkData.bookmarkID) {
+      element.likeCount++
+      bookmarkLike.textContent = `${element.likeCount} Like`
     }
+    return element
+  })
+  setData(currentuserID, updatedBookmarks)
 }
 
-function onClickBookmarkElementLikeBtn(event) {
-  const likeBtn = event.target;
-  const bookmarkIndex = likeBtn.dataset.bookmarkIndex;
-  const bookmark = getData(getCurrentUserId())[bookmarkIndex];
-
-  likeBtn.innerText = bookmark.addLikeCount();
-}
-//endregion
-
-function dispatchUserSelectInputEvent() {
-  getUserSelect().dispatchEvent(new Event("input"));
+//Generates a shareable link for a specific bookmark and copies it to the clipboard.
+async function shareBookmark(bookmarkCard) {
+  const currentuserID = document.querySelector('#user_selector').value
+  const url = `${window.location.origin}/?user=${currentuserID}&bookmark=${bookmarkCard.bookmarkID}`
+  await navigator.clipboard.writeText(url)
+  alert('URL COPIED')
 }
 
-function getBookmarkElementsContainer() {
-  //TODO: implement the getting bookmark elements container
-}
-
-function clearBookmarkElementsContainer() {
-  getBookmarkElementsContainer().innerHTML = "";
+//Reads user and bookmark IDs from the URL and renders the corresponding shared bookmark.
+function renderSharedBookmarkFromURL() {
+  const query = new URLSearchParams(window.location.search)
+  const selectedUserId = query.get('user')
+  const selectedBookmarkID = query.get('bookmark')
+  if (selectedUserId && selectedBookmarkID) {
+    const currentUser = document.querySelector('#user_selector')
+    currentUser.value = selectedUserId
+    const userBookmarks = getData(selectedUserId)
+    const bookmarkToRender = userBookmarks.filter(
+      (userBookmark) => userBookmark.bookmarkID == selectedBookmarkID,
+    )
+    renderBookmarks(bookmarkToRender)
+  }
 }
 
 function checkIsUrlCorrect(url) {
   //TODO: implement url check logic and message show if it's incorrect.
-  return true;
+  return true
 }
 
 function checkIsDescriptionCorrect(description) {
   //TODO: implement description check logic and message show if it's incorrect.
-  return true;
-}
-//endregion
-
-//TODO: uncomment when script will be ready.
-//window.onload = onLoadWindow();
-
-function init(){
-  // setupUserSelect();
-  setupBookmarkAddForm();
+  return true
 }
 
-init();
+function init() {
+  const initUser = document.querySelector('#user_selector')
+  renderBookmarks(getData(initUser.value))
+  setupUserSelect()
+  setupBookmarkAddForm()
+  renderSharedBookmarkFromURL()
+}
+
+init()

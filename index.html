@@ -1,24 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <script type="module" src="script.js"></script>
+    <link href="./style.css" rel="stylesheet" />
   </head>
   <body>
     <header>
       <select id="user_selector">
         <option>1</option>
         <option>2</option>
+        <option>3</option>
       </select>
       <main>
         <form>
           <label>Title</label>
-          <input type="text" placeholder="Bookmark Title" id="fm_bookmark_title"/>
+          <input type="text" placeholder="Bookmark Title" id="fm_bookmark_title" />
           <label>URL</label>
-          <input type="text" placeholder="Bookmark URL" id="fm_bookmark_url"/>
+          <input type="text" placeholder="Bookmark URL" id="fm_bookmark_url" />
           <label>Description</label>
           <textarea id="fm_bookmark_description"></textarea>
           <button id="bookmark_add_btn">Add Bookmark</button>
         </form>
+        <section id="bookmarks"></section>
       </main>
     </header>
   </body>
