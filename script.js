@@ -122,7 +122,13 @@ function renderBookmarks(bookmarks) {
 }
 
 function renderNoBookmarksMessage() {
-  //TODO: implement setting no bookmarks message to the its container
+  const bookmarkSection = document.querySelector('#bookmarks')
+  const nobookmarkArticle = document.createElement('article')
+  const paragraph = document.createElement('p')
+
+  paragraph.textContent = NO_BOOKMARKS_MESSAGE
+  nobookmarkArticle.append(paragraph)
+  bookmarkSection.append(nobookmarkArticle)
 }
 
 //Increases the like count of a specific bookmark and updates the stored data for the selected user.
