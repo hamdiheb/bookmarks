@@ -48,15 +48,17 @@ function saveBookmark(title, url, description, userID) {
 
 //Handles adding a new bookmark for the selected user and wiring the form button to trigger this process on click.
 function setupBookmarkAddForm() {
-  const bookmarkTitle = document.querySelector('#fm_bookmark_title')
-  const bookmarkURL = document.querySelector('#fm_bookmark_url')
-  const bookmarkDescription = document.querySelector('#fm_bookmark_description')
-  const userID = document.querySelector('#user_selector')
-  const bookmarkAddBtn = document.querySelector('#bookmark_add_btn')
+  const bookmarkTitle = document.querySelector('#fm_bookmark_title');
+  const bookmarkURL = document.querySelector('#fm_bookmark_url');
+  const bookmarkDescription = document.querySelector('#fm_bookmark_description');
+  const userID = document.querySelector('#user_selector');
+  const bookmarkAddBtn = document.querySelector('#bookmark_add_btn');
   bookmarkAddBtn.addEventListener('click', (event) => {
-    saveBookmark(bookmarkTitle.value, bookmarkURL.value, bookmarkDescription.value, userID.value)
-    renderBookmarks(getData(userID.value))
-    event.preventDefault()
+    if (verifyTitle(bookmarkTitle) && verifyUrl(bookmarkURL) && verifyDescription(bookmarkDescription)) {
+      saveBookmark(bookmarkTitle.value, bookmarkURL.value, bookmarkDescription.value, userID.value);
+      renderBookmarks(getData(userID.value));
+      event.preventDefault();
+    }
   })
 }
 
@@ -155,14 +157,28 @@ function renderSharedBookmarkFromURL() {
   }
 }
 
-function checkIsUrlCorrect(url) {
-  //TODO: implement url check logic and message show if it's incorrect.
-  return true
+function verifyTitle(title) {
+  if (title.value.length > 3) {
+    return true;
+  }
+  alert("Title length should be more than 3.");
 }
 
-function checkIsDescriptionCorrect(description) {
-  //TODO: implement description check logic and message show if it's incorrect.
-  return true
+function verifyUrl(url) {
+  if (!/https?:\/\/\S+/.test(url.value)) {
+    alert("URL should start from http:// or https://.");
+  }
+  if (/\s+/.test(url.value)) {
+    alert("URL couldn't contain spaces.");
+  }
+  return true;
+}
+
+function verifyDescription(description) {
+  if (description.value.length > 10) {
+    return true;
+  }
+  alert("Description length should be more than 10 symbols.");
 }
 
 function init() {
